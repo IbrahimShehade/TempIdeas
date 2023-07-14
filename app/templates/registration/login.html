@@ -1,0 +1,22 @@
+﻿{% extends 'base.html' %}
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+{% block title %}Login{% endblock %}{% block content %}
+<div class="p-3 mb-2 bg-light text-dark">
+    <h2 style="color: #08131a; font-weight: 100; margin: 5px; margin-bottom: 30px;width:fit-content; border: 1px solid #0d6efd; border-width: 1px 1px 1px 0; padding: 10px; border-radius: 2.6px;  ">تسجيل دخول</h2>
+    <form method="post">
+        {% csrf_token %}
+        اسم المستخدم: {{ form.username }}
+        <br /><br />
+        كلمة السر:  {{ form.password }}
+        <br /><br />
+              <button class="btn btn-secondary m-1" type="submit">النالي </button>
+    </form>
+    <a href="{% url 'password_reset' %}">هل نسيت كلمة السر؟</a>
+   
+
+</div>
+
+    {% endblock %}
+

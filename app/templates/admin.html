@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <title></title>
+</head>
+<body>
+    <h1>Admin</h1>
+    
+    <a  class="btn btn-secondary btn-sm" href="{% url 'logout' %}"> Sign out</a>
+    
+    <table>
+        <br />
+        <br />
+        <tr>
+
+            <th>Username</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for user in users %}
+       
+        {% if user.is_staff is False%}
+        <tr>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endif %}
+ 
+        {% endfor %}
+
+    </table>
+
+</body>
+</html>

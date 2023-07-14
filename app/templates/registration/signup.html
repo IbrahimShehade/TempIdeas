@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        footer {
+            position: fixed;
+            bottom: -14px;
+            margin-top: 60px;
+            padding: 10px;
+            background: linear-gradient(0deg, rgba(255,255,255,0.50) 5%, rgba(0,0,0,0.50) 90%);
+            color: white;
+            left: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            font-size: 18px;
+            position: relative;
+            bottom: 40px;
+        }
+        .part1 #part2 {
+            display: none;
+        }
+        
+    </style>
+
+
+</head>
+<body>
+    <a href="{% url 'login' %}" style="font-size: 15px; margin: 30px; display: inline-block;">
+        <button style="font-size: 15px; margin: 0;" class="btn btn-primary m-1">هل لديك حساب سابق</button>
+      </a>
+    <div class="p-3 mb-2 bg-light text-dark" style="margin: 10px;">
+
+        <form id="myForm" method="post" class="form-control" onsubmit="return validateForm()">
+            {% csrf_token %}
+            <h1 style="margin: 0;">
+                إنشاء حساب جديد
+            </h1>
+            <div id="part1" style="font-size:25px">
+                <h4 style="font-weight:100">محل إقامة المستخدم</h4>
+                <br />
+                <div class="form-group">
+                    <label for="id_province">المحافظة:</label>
+                   {{ form.province }}
+                </div>
+                <br /><br />
+                      <div class="form-group">
+                           <label for="id_qada">القضاء:</label>
+                         {{ form.qada }}
+                      </div>
+                <br /><br />
+                      <div class="form-group">
+                          <label for="id_municipal">البلدية:</label>
+                        {{ form.municipal }}
+                      </div>
+                    <br /><br />
+                    <p>  </p>
+                    <button id="showPart2Btn" type="button" class="btn btn-secondary m-1" style="padding:4px;font-size: 17px" onclick="showPart2()">التالي</button>
+                </div>
+
+                <div style="margin-bottom:100px" id="part2" class="hidden">
+                    <h2 style="font-size: 25px; font-weight: 100;margin-bottom: 5px;">معلومات عن المستخدم</h2>
+                    <br /><br />
+                    اسم الاستعمال: {{ form.username }}
+                    <br /><br />
+                    الاسم:{{ form.first_name }}
+                    <br /><br />
+                    اسم الأب:{{ form.middle_name }}
+                    <br /><br />
+                    الشهرة: {{ form.last_name }}
+                    <br /><br />
+                    الإيميل: {{ form.email }}
+                    <br /><br />
+                    رقم الجوال:{{ form.mobile_phone }}
+                    
+                    <br /><br />
+
+                    <br /><br />
+
+                    <br /><br />
+                    تأكيد كلمة السر: {{ form.password }} - كلمة السر: {{ form.confirm_password }}
+                    <br /><br />
+                    تاريخ الولادة:{{ form.date_of_birth }}
+                    <br /><br />
+
+                    
+                    <button style=" font-size: 16px" id="submitBtn" type="submit" class="btn btn-secondary m-1 hidden">إنشاء حساب جديد</button>
+                </div>
+</form>
+    </div>
+
+    <footer >
+        <span>
+            جميع الحقوق محفوظة ©. لا يجوز استنساخ أي جزء من صفحة الويب هذه بأي شكل من الأشكال، أو بأي وسيلة ، دون الحصول على إذن خطي مسبق من البلدية.
+            <script>document.write(new Date().getFullYear())</script>
+        </span><br />
+        <span style="color: white;">
+            تصميم وبرمجة
+            <p class="inner" style="padding: 0; color: #6c7b95; display: inline-block; font-weight: bold; margin-right: 5px; text-align: center; width: 48px;">IDEAS</p>
+        </span>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var province = document.getElementById("id_province");
+            var qada = document.getElementById("id_qada");
+            var municipal = document.getElementById("id_municipal");
+            var showPart2Btn = document.getElementById('showPart2Btn');
+            var submitBtn = document.getElementById('submitBtn');
+            var form = document.getElementById('myForm');
+
+            showPart2Btn.addEventListener('click', function (event) {
+     
+                if (province.value !== "" && qada.value !== "" && municipal.value !== "" ) {
+                    showPart2(); 
+                } else {
+                    alert("خطىء في الإدخال . أدخل المحافظة والقضاء التابعان لبلديتك ");
+                }
+            });
+
+            form.addEventListener('submit', function (event) {
+                
+                if (submitBtn.disabled) {
+                    event.preventDefault();
+                }
+            });
+
+            function showPart2() {
+                var part1 = document.getElementById('part1');
+                var part2 = document.getElementById('part2');
+                var submitBtn = document.getElementById('submitBtn');
+
+                part1.style.display = 'none';
+                part2.style.display = 'block';
+                submitBtn.style.display = 'block';
+
+                // Enable the submit button
+                submitBtn.disabled = false;
+                showPart2Btn.disabled = true;
+            }
+        });
+
+
+        function updateQadaOptions() {
+            var provinceSelect = document.getElementById("id_province");
+            var qadaSelect = document.getElementById("id_qada");
+            var municipalSelect = document.getElementById("id_municipal");
+
+            var provinceId = provinceSelect.value;
+
+            // Clear previous options
+            qadaSelect.innerHTML = "<option value=''>---------</option>";
+            municipalSelect.innerHTML = "<option value=''>---------</option>";
+
+            if (provinceId) {
+                // Send an AJAX request to get the qada options
+                var url = "/get_qada_options/?province_id=" + provinceId;
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(qada => {
+                            var option = document.createElement("option");
+                            option.value = qada.id;
+                            option.text = qada.name;
+                            qadaSelect.add(option);
+                        });
+                    });
+            }
+        }
+
+        // Function to update the municipal options based on the selected qada
+        function updateMunicipalOptions() {
+            var qadaSelect = document.getElementById("id_qada");
+            var municipalSelect = document.getElementById("id_municipal");
+
+            var qadaId = qadaSelect.value;
+
+            // Clear previous options
+            municipalSelect.innerHTML = "<option value=''>---------</option>";
+
+            if (qadaId) {
+                // Send an AJAX request to get the municipal options
+                var url = "/get_municipal_options/?qada_id=" + qadaId;
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(municipal => {
+                            var option = document.createElement("option");
+                            option.value = municipal.id;
+                            option.text = municipal.name;
+                            municipalSelect.add(option);
+                        });
+                    });
+            }
+        }
+
+        // Add event listeners to the province and qada select elements
+        document.getElementById("id_province").addEventListener("change", updateQadaOptions);
+        document.getElementById("id_qada").addEventListener("change", updateMunicipalOptions);
+
+        // Call the updateQadaOptions function initially to populate the qada options based on the selected province
+        updateQadaOptions();
+    </script>
+
+
+</body>
+</html>
+

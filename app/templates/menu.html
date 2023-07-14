@@ -1,0 +1,25 @@
+﻿ {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+<form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+
+    <div class=" bg-light" style="margin:100px ;padding:100px">
+        <h2>Menu</h2>
+        
+        <h1>{{ user.username }}</h1>
+        {% if user.date_of_birth %}
+        <p>Date of Birth: {{ user.date_of_birth }}</p>
+        {% if user.age %}
+        <p>Age: {{ user.age }}</p>
+        {% else %}
+        <p>Age: Calculating...</p>
+        {% endif %}
+        {% else %}
+        <p>Date of Birth not provided</p>
+        {% endif %}
+        <p>محافظة  {{ user.province }}</p>
+        <p>قضاء  {{ user.qada }}</p>
+        <button style="margin-top:20px" type="submit">تسجيل خروج</button>
+    </div>
+</form>

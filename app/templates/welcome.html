@@ -1,0 +1,35 @@
+<html>
+<head>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <meta charset="utf-8">
+    <title>{% block title %}Django Auth Tutorial{% endblock %}</title>
+</head>
+<body>
+    <main>
+        {% block content %}
+        <div class="d-flex justify-content-center align-items-center bg-light">
+            <div class="p-3 mb-2 bg-light text-dark">
+                <div class="border border-primary rounded m-5" style="width:257px; height: 40vh; ">
+                    <div class=" text-center font-weight-light p-2 col m-3">
+
+                        <h5>!تم إنشاء حساب خاص بك </h5>
+                    </div>
+                    <div class="text-center col m-5">
+                        <a class="btn btn-primary" href="{% url 'signup' %}">عد إلى الشاشة الرئيسية</a>
+                    </div>
+                    <div class="text-center col m-5">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endblock %}
+    </main>
+</body>
+</html>
+
+
+
+

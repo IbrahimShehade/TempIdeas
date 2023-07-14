@@ -1,0 +1,8 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<div style="width:-50%;text-align:right">
+    <h2>تم إرسال البريد الإلكتروني لإعادة تعيين كلمة المرور</h2>
+    <p>تم إرسال بريد إلكتروني إلى عنوان بريدك الإلكتروني المسجل. يرجى التحقق من صندوق الوارد الخاص بك واتباع التعليمات لإعادة تعيين كلمة المرور الخاصة بك</p>
+    <a href="{% url 'login' %}"> <button style="font-size:15px;margin:20px" class="btn btn-primary m-1">عودة إلى الشاشة الرئيسية</button></a>
+    {% endblock content %}

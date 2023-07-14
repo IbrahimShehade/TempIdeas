@@ -1,0 +1,39 @@
+<html>
+<head>
+
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <meta charset="utf-8">
+    <title>{% block title %}Website{% endblock %}</title>
+    <style>
+        /* Set a minimum height for the body to push the footer to the bottom */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Content wrapper to push footer to the top */
+        .content-wrapper {
+            flex: 1;
+        }
+
+        .changeA {
+            text-decoration: none;
+        }
+            .changeA:hover,
+            .changeA:focus {
+                text-decoration: underline;
+                outline: none; /* Optional: Remove the default focus outline */
+            }
+
+    </style>
+</head>
+<body>
+    
+        {% block content %}
+        {% endblock %}
+    
+</body>
+</html>

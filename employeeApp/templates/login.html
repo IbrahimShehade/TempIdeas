@@ -1,0 +1,91 @@
+
+<form method="post" action="{% url 'login-employee' %}" style="text-align: center;
+margin-top: 50px;">
+    {% csrf_token %}
+    <h1>صفحة العملاء</h1>
+    اسم الاستعمال: {{ form.username }}
+    <br /><br />
+   كلمة السر: {{ form.password }}  
+    <br /><br />
+    <div class="form-group">
+        <label for="id_province">المحافظة:</label>
+       {{ form.province }}
+    </div>
+    <br /><br />
+          <div class="form-group">
+               <label for="id_qada">القضاء:         </label>
+    {{ form.qada }}
+          </div>
+    <br /><br />
+          <div class="form-group">
+              <label for="id_municipal">البلدية:      </label>
+      {{ form.municipal }}
+          </div>
+         
+    
+
+    <button type="submit" style="margin: 20px;">تسجيل دخول</button>
+</form>
+
+<script>
+    
+    function updateQadaOptions() {
+            var provinceSelect = document.getElementById("id_province");
+            var qadaSelect = document.getElementById("id_qada");
+            var municipalSelect = document.getElementById("id_municipal");
+
+            var provinceId = provinceSelect.value;
+
+            // Clear previous options
+            qadaSelect.innerHTML = "<option value=''>---------</option>";
+            municipalSelect.innerHTML = "<option value=''>---------</option>";
+
+            if (provinceId) {
+                // Send an AJAX request to get the qada options
+                var url = "/get_qada_options/?province_id=" + provinceId;
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(qada => {
+                            var option = document.createElement("option");
+                            option.value = qada.id;
+                            option.text = qada.name;
+                            qadaSelect.add(option);
+                        });
+                    });
+            }
+        }
+
+        // Function to update the municipal options based on the selected qada
+        function updateMunicipalOptions() {
+            var qadaSelect = document.getElementById("id_qada");
+            var municipalSelect = document.getElementById("id_municipal");
+
+            var qadaId = qadaSelect.value;
+
+            // Clear previous options
+            municipalSelect.innerHTML = "<option value=''>---------</option>";
+
+            if (qadaId) {
+                // Send an AJAX request to get the municipal options
+                var url = "/get_municipal_options/?qada_id=" + qadaId;
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(municipal => {
+                            var option = document.createElement("option");
+                            option.value = municipal.id;
+                            option.text = municipal.name;
+                            municipalSelect.add(option);
+                        });
+                    });
+            }
+        }
+
+        // Add event listeners to the province and qada select elements
+        document.getElementById("id_province").addEventListener("change", updateQadaOptions);
+        document.getElementById("id_qada").addEventListener("change", updateMunicipalOptions);
+
+        // Call the updateQadaOptions function initially to populate the qada options based on the selected province
+        updateQadaOptions();
+</script>
